@@ -498,13 +498,13 @@
     <div class="header">
         <h1>✨ The Bright Sight</h1>
         <p>Illuminating minds • Offline Learning for Cameroon</p>
-        <div class="offline-badge">✓ Works Offline • No Internet Needed</div>
+        <div class="offline-badge">✓ No Internet Needed</div>
     </div>
 
     <div class="tabs">
         <button class="tab active" data-tab="learn">📖 Learn</button>
         <button class="tab" data-tab="progress">📊 Progress</button>
-        <button class="tab" data-tab="teachers">👩‍🏫 Contact Teachers</button>
+        <button class="tab" data-tab="teachers">👩‍🏫 Assistant</button>
         <button class="tab" data-tab="share">📤 Share</button>
     </div>
 
@@ -512,7 +512,7 @@
     <div id="learn-pane" class="content-pane active">
         <div id="grade-view">
             <h3 style="margin-bottom: 8px;">Select Your Form / Cycle</h3>
-            <p style="font-size: 0.8rem; color: #666; margin-bottom: 16px;">🇨🇲 Cameroon Secondary Education: First Cycle (Form 1-5) & Second Cycle (Upper Sixth)</p>
+            <p style="font-size: 0.8rem; color: #666; margin-bottom: 16px;">🇨🇲 Cameroon Secondary Education: First Cycle (Form 1-5) & Second Cycle (Lower sixth to Upper sixth)</p>
             <div id="grade-grid"></div>
         </div>
         <div id="subject-view" class="hidden">
@@ -551,14 +551,14 @@
                 <span>👩‍🏫</span> 
                 <span>Reach Out to Your Teachers</span>
             </div>
-            <p style="margin-bottom: 16px; font-size: 0.85rem;">Having trouble with a subject? Contact your subject teacher directly via WhatsApp or Email. They're here to help you shine brighter!</p>
+            <p style="margin-bottom: 16px; font-size: 0.85rem;">Having trouble with a subject? Contact an assistant directly via WhatsApp or Email. They're here to help you shine brighter!</p>
             <div id="teachers-list"></div>
             
             <div class="question-input">
-                <h4 style="margin-bottom: 8px;">📝 Quick Question to All Teachers</h4>
+                <h4 style="margin-bottom: 8px;">📝 Quick Question to All Assistant</h4>
                 <textarea id="studentQuestion" rows="3" placeholder="Write your question or concern here... (e.g., I don't understand quadratic equations)"></textarea>
                 <button onclick="sendGeneralQuestion()">📨 Send Question</button>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 8px;">Your question will be prepared for sharing with teachers via WhatsApp. Teachers will reply as soon as possible.</p>
+                <p style="font-size: 0.7rem; color: #888; margin-top: 8px;">Your question will be prepared for sharing with Assistant via WhatsApp. Assistant will reply as soon as possible.</p>
             </div>
         </div>
     </div>
@@ -573,8 +573,8 @@
         </div>
         <div class="share-card" style="margin-top: 16px;">
             <h3>📖 Offline Content Included</h3>
-            <p style="margin-top: 8px;">✅ Mathematics (Forms 1-5 & Upper Sixth)<br>✅ English Language (Forms 1-5 & Upper Sixth)<br>✅ Science (Forms 1-5) & Advanced Topics for Second Cycle</p>
-            <p style="margin-top: 12px; font-size: 0.8rem; color: #00c851;">✓ Fully offline • ✓ Free forever • ✓ For Cameroon</p>
+            <p style="margin-top: 8px;">✅ Mathematics (Forms 1-5, Lower and Upper Sixth)<br>✅ English Language (Forms 1-5, Lower & Upper Sixth)<br>✅ Science (Forms 1-5) & Advanced Topics for Second Cycle</p>
+            <p style="margin-top: 12px; font-size: 0.8rem; color: #00c851;">✓ Fully offline • ✓ Free forever • ✓ For Cameroonians</p>
         </div>
     </div>
 
@@ -587,7 +587,7 @@
                 { id: 3, name: "Form 3", cycle: "First Cycle" },
                 { id: 4, name: "Form 4", cycle: "First Cycle" },
                 { id: 5, name: "Form 5", cycle: "First Cycle" },
-                { id: 6, name: "Upper Sixth (Second Cycle)", cycle: "Second Cycle" }
+                { id: 6, name: "Lower and Upper Sixth (Second Cycle)", cycle: "Second Cycle" }
             ],
             subjects: {
                 "Mathematics": {
@@ -620,7 +620,7 @@
         // Teacher Contact Info per Subject
         const teachersContact = {
             "Mathematics": { name: "Mr. Emmanuel N.", whatsapp: "+237612345678", email: "emmanuel.math@brightsight.cm", avatar: "📐" },
-            "English Language": { name: "Mrs. Sarah F.", whatsapp: "+237623456789", email: "sarah.english@brightsight.cm", avatar: "📖" },
+            "English Language": { name: "Mrs. Sarah F.", whatsapp: "+237603456789", email: "sarah.english@brightsight.cm", avatar: "📖" },
             "Science": { name: "Dr. Pierre K.", whatsapp: "+237634567890", email: "pierre.science@brightsight.cm", avatar: "🔬" }
         };
 
