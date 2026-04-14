@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a73e8">
+    <title>The Bright Sight | Offline Learning Cameroon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            padding-bottom: 70px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff5e00 100%);
+            color: white;
+            padding: 20px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .offline-badge {
+            background: #00c851;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-top: 8px;
+        }
+
+        .cycle-badge {
+            background: #ffa000;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            margin-left: 8px;
+            color: #1a1a2e;
+            font-weight: 500;
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: #ff5e00;
+            border-bottom: 3px solid #ff5e00;
+        }
+
+        /* Content Areas */
+        .content-pane {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.3s;
+        }
+
+        .content-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Grade/Form Cards */
+        .grade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grade-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 4px solid #ff8c00;
+        }
+
+        .grade-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .grade-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff5e00;
+        }
+
+        .grade-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .cycle-tag {
+            font-size: 0.7rem;
+            background: #fff0e0;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 6px;
+            color: #ff5e00;
+        }
+
+        /* Subject List */
+        .subject-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .subject-item {
+            background: white;
+            border-radius: 10px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subject-item:hover {
+            background: #fff8f0;
+        }
+
+        .subject-name {
+            font-weight: 500;
+        }
+
+        .subject-icon {
+            color: #ff8c00;
+            font-size: 1.2rem;
+        }
+
+        /* Lesson Content */
+        .lesson-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .lesson-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #ff5e00;
+        }
+
+        .lesson-content {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 12px;
+        }
+
+        .quiz-btn {
+            background: #ff8c00;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .quiz-btn:hover {
+            background: #e07000;
+        }
+
+        /* Quiz Interface */
+        .quiz-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .quiz-question {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .quiz-option {
+            background: #f0f2f5;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #e0e4e8;
+        }
+
+        .quiz-option.selected {
+            background: #ff8c00;
+            color: white;
+        }
+
+        .quiz-feedback {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .quiz-feedback.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Progress Section */
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+
+        .progress-list {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .progress-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-score {
+            color: #00c851;
+            font-weight: 500;
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: none;
+            border: none;
+            color: #ff5e00;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Share Section */
+        .share-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .share-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 8px;
+        }
+
+        /* Contact Teachers Section */
+        .contact-section {
+            background: linear-gradient(135deg, #fff5eb 0%, #ffe8d9 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+            border: 1px solid #ffd9b5;
+        }
+
+        .contact-title {
+            font-size: 1.2rem;
+            color: #ff5e00;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .teacher-card {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+
+        .teacher-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 2;
+            min-width: 180px;
+        }
+
+        .teacher-avatar {
+            width: 48px;
+            height: 48px;
+            background: #ff8c00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .teacher-details h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .teacher-details p {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .contact-buttons button {
+            background: #ff8c00;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .contact-buttons button.whatsapp {
+            background: #25D366;
+        }
+
+        .contact-buttons button.email {
+            background: #1a73e8;
+        }
+
+        .contact-buttons button:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+
+        .question-input {
+            margin-top: 16px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .question-input textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 12px;
+        }
+
+        .question-input button {
+            background: #ff8c00;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .utility {
+            display: none;
+        }
+        .hidden {
+            display: none;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            margin: 16px 0 8px 0;
+            color: #ff5e00;
+            border-left: 4px solid #ffa000;
+            padding-left: 12px;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 30px;
+            z-index: 1000;
+            animation: fadeOut 2s forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>✨ The Bright Sight</h1>
+        <p>Illuminating minds • Offline Learning for Cameroon</p>
+        <div class="offline-badge">✓ Works Offline • No Internet Needed</div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" data-tab="learn">📖 Learn</button>
+        <button class="tab" data-tab="progress">📊 Progress</button>
+        <button class="tab" data-tab="teachers">👩‍🏫 Contact Teachers</button>
+        <button class="tab" data-tab="share">📤 Share</button>
+    </div>
+
+    <!-- Learn Pane -->
+    <div id="learn-pane" class="content-pane active">
+        <div id="grade-view">
+            <h3 style="margin-bottom: 8px;">Select Your Form / Cycle</h3>
+            <p style="font-size: 0.8rem; color: #666; margin-bottom: 16px;">🇨🇲 Cameroon Secondary Education: First Cycle (Form 1-5) & Second Cycle (Upper Sixth)</p>
+            <div id="grade-grid"></div>
+        </div>
+        <div id="subject-view" class="hidden">
+            <button class="back-btn" onclick="showGradeView()">← Back to Forms</button>
+            <h3 id="grade-title" style="margin-bottom: 12px;"></h3>
+            <div class="subject-list" id="subject-list"></div>
+        </div>
+        <div id="lesson-view" class="hidden">
+            <button class="back-btn" onclick="showSubjectView()">← Back to Subjects</button>
+            <div id="lesson-content"></div>
+        </div>
+        <div id="quiz-view" class="hidden">
+            <button class="back-btn" onclick="showLessonView()">← Back to Lesson</button>
+            <div id="quiz-container"></div>
+        </div>
+    </div>
+
+    <!-- Progress Pane -->
+    <div id="progress-pane" class="content-pane">
+        <div class="stats-card">
+            <div class="stats-number" id="total-quizzes">0</div>
+            <div>Quizzes Completed</div>
+        </div>
+        <div class="stats-card">
+            <div class="stats-number" id="avg-score">0%</div>
+            <div>Average Score</div>
+        </div>
+        <h3 style="margin-bottom: 12px;">Recent Progress</h3>
+        <div class="progress-list" id="progress-list"></div>
+    </div>
+
+    <!-- Teachers Contact Pane -->
+    <div id="teachers-pane" class="content-pane">
+        <div class="contact-section">
+            <div class="contact-title">
+                <span>👩‍🏫</span> 
+                <span>Reach Out to Your Teachers</span>
+            </div>
+            <p style="margin-bottom: 16px; font-size: 0.85rem;">Having trouble with a subject? Contact your subject teacher directly via WhatsApp or Email. They're here to help you shine brighter!</p>
+            <div id="teachers-list"></div>
+            
+            <div class="question-input">
+                <h4 style="margin-bottom: 8px;">📝 Quick Question to All Teachers</h4>
+                <textarea id="studentQuestion" rows="3" placeholder="Write your question or concern here... (e.g., I don't understand quadratic equations)"></textarea>
+                <button onclick="sendGeneralQuestion()">📨 Send Question</button>
+                <p style="font-size: 0.7rem; color: #888; margin-top: 8px;">Your question will be prepared for sharing with teachers via WhatsApp. Teachers will reply as soon as possible.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Pane -->
+    <div id="share-pane" class="content-pane">
+        <div class="share-card">
+            <h3>📱 Share The Bright Sight</h3>
+            <p style="margin: 12px 0; color: #666;">Share this app with friends, classmates, or teachers. Works offline!</p>
+            <button class="share-btn" onclick="shareApp()">📤 Share via WhatsApp / Bluetooth</button>
+            <p style="margin-top: 16px; font-size: 0.8rem; color: #888;">Together we can light up every mind.</p>
+        </div>
+        <div class="share-card" style="margin-top: 16px;">
+            <h3>📖 Offline Content Included</h3>
+            <p style="margin-top: 8px;">✅ Mathematics (Forms 1-5 & Upper Sixth)<br>✅ English Language (Forms 1-5 & Upper Sixth)<br>✅ Science (Forms 1-5) & Advanced Topics for Second Cycle</p>
+            <p style="margin-top: 12px; font-size: 0.8rem; color: #00c851;">✓ Fully offline • ✓ Free forever • ✓ For Cameroon</p>
+        </div>
+    </div>
+
+    <script>
+        // ============ CURRICULUM DATA ============
+        const curriculumData = {
+            forms: [
+                { id: 1, name: "Form 1", cycle: "First Cycle" },
+                { id: 2, name: "Form 2", cycle: "First Cycle" },
+                { id: 3, name: "Form 3", cycle: "First Cycle" },
+                { id: 4, name: "Form 4", cycle: "First Cycle" },
+                { id: 5, name: "Form 5", cycle: "First Cycle" },
+                { id: 6, name: "Upper Sixth (Second Cycle)", cycle: "Second Cycle" }
+            ],
+            subjects: {
+                "Mathematics": {
+                    icon: "➕",
+                    lessons: {
+                        "Fractions & Decimals": { content: "<p><strong>Fractions & Decimals (Form 1-2 level)</strong></p><p>A fraction represents a part of a whole. Example: 1/2, 3/4. Decimals: 0.5 = 1/2.</p><p><strong>Operations:</strong> Adding fractions requires common denominator.</p>", quiz: [{ q: "What is 1/4 + 1/4?", options: ["1/8", "1/2", "2/4", "Both B and C"], correct: 3 }, { q: "0.25 + 0.25 = ?", options: ["0.5", "0.25", "0.75", "1.0"], correct: 0 }, { q: "Which fraction is largest?", options: ["1/2", "1/4", "1/3", "1/5"], correct: 0 }] },
+                        "Algebra Basics": { content: "<p><strong>Algebra (Forms 3-5)</strong></p><p>Algebra uses letters for unknowns. Example: x + 3 = 7 → x = 4.</p>", quiz: [{ q: "Solve: x + 5 = 12", options: ["5", "7", "17", "12"], correct: 1 }, { q: "Simplify: 3x + 2x", options: ["5x", "6x", "x", "5x²"], correct: 0 }, { q: "If 2x = 10, then x = ?", options: ["2", "5", "10", "20"], correct: 1 }] },
+                        "Quadratic Equations": { content: "<p><strong>Quadratic Equations (Upper Sixth)</strong></p><p>ax² + bx + c = 0. Formula: x = [-b ± √(b²-4ac)]/2a</p>", quiz: [{ q: "Discriminant formula?", options: ["b² - 4ac", "b² + 4ac", "4ac - b²", "2ab"], correct: 0 }, { q: "Solve x² - 4 = 0", options: ["x=2 only", "x=-2 only", "x=2 or -2", "No solution"], correct: 2 }, { q: "Sum of roots for x² - 7x + 12 = 0?", options: ["7", "12", "-7", "5"], correct: 0 }] }
+                    }
+                },
+                "English Language": {
+                    icon: "📖",
+                    lessons: {
+                        "Grammar & Parts of Speech": { content: "<p><strong>Parts of Speech</strong></p><p>Nouns, verbs, adjectives, adverbs. Example: The clever student reads quickly.</p>", quiz: [{ q: "'Teacher' is?", options: ["Verb", "Noun", "Adjective", "Adverb"], correct: 1 }, { q: "Which is a verb?", options: ["School", "Running", "Beautiful", "Slowly"], correct: 1 }, { q: "'Beautiful' is an?", options: ["Noun", "Verb", "Adjective", "Adverb"], correct: 2 }] },
+                        "Essay Writing": { content: "<p><strong>Essay Structure</strong></p><p>Introduction, Body, Conclusion.</p>", quiz: [{ q: "First paragraph called?", options: ["Conclusion", "Body", "Introduction", "Thesis"], correct: 2 }, { q: "How many main parts?", options: ["2", "3", "4", "5"], correct: 1 }, { q: "Which is NOT an essay type?", options: ["Narrative", "Descriptive", "Mathematical", "Argumentative"], correct: 2 }] },
+                        "Literature Analysis": { content: "<p><strong>Literary Analysis</strong></p><p>Themes, characters, symbolism.</p>", quiz: [{ q: "Main character is?", options: ["Antagonist", "Protagonist", "Narrator", "Foil"], correct: 1 }, { q: "'Life is a highway' is a?", options: ["Simile", "Metaphor", "Hyperbole", "Personification"], correct: 1 }, { q: "Hints of future events?", options: ["Flashback", "Foreshadowing", "Symbolism", "Irony"], correct: 1 }] }
+                    }
+                },
+                "Science": {
+                    icon: "🔬",
+                    lessons: {
+                        "Human Biology": { content: "<p><strong>Human Body</strong></p><p>Heart pumps blood, lungs for breathing.</p>", quiz: [{ q: "Which organ pumps blood?", options: ["Brain", "Heart", "Lungs", "Stomach"], correct: 1 }, { q: "Which organ helps breathe?", options: ["Heart", "Brain", "Lungs", "Kidneys"], correct: 2 }, { q: "Recommended sleep for teens?", options: ["4-5", "8-10", "12-14", "2-3"], correct: 1 }] },
+                        "Chemistry Basics": { content: "<p><strong>Atoms & Molecules</strong></p><p>H₂O is water.</p>", quiz: [{ q: "What is H₂O?", options: ["Oxygen", "Water", "Hydrogen", "Salt"], correct: 1 }, { q: "Smallest unit of element?", options: ["Molecule", "Atom", "Proton", "Cell"], correct: 1 }, { q: "Gas for photosynthesis?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], correct: 1 }] },
+                        "Physics: Mechanics": { content: "<p><strong>Newton's Laws</strong></p><p>F = ma</p>", quiz: [{ q: "Newton's Second Law?", options: ["F = m/a", "F = ma", "F = m + a", "F = m - a"], correct: 1 }, { q: "Lurch forward when car stops?", options: ["First Law", "Second Law", "Third Law", "Gravity"], correct: 0 }, { q: "Action-reaction is which law?", options: ["First", "Second", "Third", "Fourth"], correct: 2 }] }
+                    }
+                }
+            }
+        };
+
+        // Teacher Contact Info per Subject
+        const teachersContact = {
+            "Mathematics": { name: "Mr. Emmanuel N.", whatsapp: "+237612345678", email: "emmanuel.math@brightsight.cm", avatar: "📐" },
+            "English Language": { name: "Mrs. Sarah F.", whatsapp: "+237623456789", email: "sarah.english@brightsight.cm", avatar: "📖" },
+            "Science": { name: "Dr. Pierre K.", whatsapp: "+237634567890", email: "pierre.science@brightsight.cm", avatar: "🔬" }
+        };
+
+        let currentForm = null, currentSubject = null, currentLesson = null, quizScore = 0, currentQuizIndex = 0, selectedAnswerIndex = null;
+        let userProgress = loadProgress();
+
+        function loadProgress() { const saved = localStorage.getItem('brightsight_progress'); return saved ? JSON.parse(saved) : { quizzes: [], totalScore: 0, totalCount: 0 }; }
+        function saveProgress() { localStorage.setItem('brightsight_progress', JSON.stringify(userProgress)); updateProgressDisplay(); }
+        function updateProgressDisplay() {
+            document.getElementById('total-quizzes').textContent = userProgress.quizzes.length;
+            const avg = userProgress.totalCount > 0 ? Math.round(userProgress.totalScore / userProgress.totalCount) : 0;
+            document.getElementById('avg-score').textContent = avg + '%';
+            const list = document.getElementById('progress-list');
+            if (list) list.innerHTML = userProgress.quizzes.slice(-10).reverse().map(p => `<div class="progress-item"><span>${p.lesson}</span><span class="progress-score">${p.score}%</span></div>`).join('') || '<div class="progress-item">No quizzes taken yet.</div>';
+        }
+        function saveQuizResult(lessonName, score) { userProgress.quizzes.push({ lesson: lessonName, score, date: new Date().toLocaleDateString() }); userProgress.totalScore += score; userProgress.totalCount++; saveProgress(); }
+
+        function renderGrades() {
+            const grid = document.getElementById('grade-grid');
+            let html = `<div class="section-title">📘 First Cycle (Form 1 - Form 5)</div><div class="grade-grid">`;
+            curriculumData.forms.filter(f => f.cycle === "First Cycle").forEach(f => { html += `<div class="grade-card" onclick="selectGrade(${f.id}, '${f.name}')"><div class="grade-number">${f.name}</div><div class="grade-label">${f.cycle}</div><div class="cycle-tag">Secondary</div></div>`; });
+            html += `</div><div class="section-title">🎓 Second Cycle (Upper Sixth)</div><div class="grade-grid">`;
+            curriculumData.forms.filter(f => f.cycle === "Second Cycle").forEach(f => { html += `<div class="grade-card" onclick="selectGrade(${f.id}, '${f.name}')"><div class="grade-number">${f.name}</div><div class="grade-label">${f.cycle}</div><div class="cycle-tag">Advanced Level</div></div>`; });
+            html += `</div>`; grid.innerHTML = html;
+        }
+        function selectGrade(id, name) { currentForm = { id, name }; document.getElementById('grade-view').classList.add('hidden'); document.getElementById('subject-view').classList.remove('hidden'); document.getElementById('grade-title').textContent = `${name} - Select Subject`; renderSubjects(); }
+        function renderSubjects() { const container = document.getElementById('subject-list'); container.innerHTML = Object.keys(curriculumData.subjects).map(subj => `<div class="subject-item" onclick="selectSubject('${subj}')"><span class="subject-name">${curriculumData.subjects[subj].icon} ${subj}</span><span class="subject-icon">→</span></div>`).join(''); }
+        function selectSubject(subject) { currentSubject = subject; document.getElementById('subject-view').classList.add('hidden'); document.getElementById('lesson-view').classList.remove('hidden'); renderLessons(); }
+        function renderLessons() { const lessons = curriculumData.subjects[currentSubject].lessons; const container = document.getElementById('lesson-content'); container.innerHTML = `<div class="lesson-container"><h2 class="lesson-title">${currentSubject} (${currentForm.name})</h2>${Object.keys(lessons).map(l => `<div class="subject-item" onclick="selectLesson('${l}')"><span class="subject-name">📘 ${l}</span><span class="subject-icon">→</span></div>`).join('')}<p style="margin-top:16px;font-size:0.75rem;">Lessons adapt to ${currentForm.name} level.</p></div>`; }
+        function selectLesson(lesson) { currentLesson = lesson; const lessonData = curriculumData.subjects[currentSubject].lessons[lesson]; document.getElementById('lesson-content').innerHTML = `<div class="lesson-container"><h2 class="lesson-title">${lesson}</h2><div class="lesson-content">${lessonData.content}</div><button class="quiz-btn" onclick="startQuiz()">📝 Take Quiz</button></div>`; }
+        function showGradeView() { document.getElementById('grade-view').classList.remove('hidden'); document.getElementById('subject-view').classList.add('hidden'); document.getElementById('lesson-view').classList.add('hidden'); document.getElementById('quiz-view').classList.add('hidden'); renderGrades(); }
+        function showSubjectView() { document.getElementById('subject-view').classList.remove('hidden'); document.getElementById('lesson-view').classList.add('hidden'); document.getElementById('quiz-view').classList.add('hidden'); renderSubjects(); }
+        function showLessonView() { document.getElementById('lesson-view').classList.remove('hidden'); document.getElementById('quiz-view').classList.add('hidden'); if (currentLesson) selectLesson(currentLesson); else renderLessons(); }
+        function startQuiz() { const quiz = curriculumData.subjects[currentSubject].lessons[currentLesson].quiz; if (!quiz) return; currentQuizIndex = 0; quizScore = 0; selectedAnswerIndex = null; document.getElementById('lesson-view').classList.add('hidden'); document.getElementById('quiz-view').classList.remove('hidden'); renderQuiz(); }
+        function renderQuiz() { const quiz = curriculumData.subjects[currentSubject].lessons[currentLesson].quiz; const q = quiz[currentQuizIndex]; const container = document.getElementById('quiz-container'); container.innerHTML = `<div class="quiz-container"><div>Question ${currentQuizIndex+1} of ${quiz.length}</div><div class="quiz-question">${q.q}</div>${q.options.map((opt,i)=>`<div class="quiz-option" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${opt}</div>`).join('')}<div id="quiz-feedback"></div><button class="quiz-btn" onclick="nextQuestion()">Next →</button></div>`; selectedAnswerIndex = null; }
+        function selectAnswer(idx) { selectedAnswerIndex = idx; document.querySelectorAll('.quiz-option').forEach((opt,i)=>{ if(i===idx) opt.classList.add('selected'); else opt.classList.remove('selected'); }); }
+        function nextQuestion() { if(selectedAnswerIndex===null){ alert('Please select an answer'); return; } const quiz = curriculumData.subjects[currentSubject].lessons[currentLesson].quiz; const isCorrect = (selectedAnswerIndex === quiz[currentQuizIndex].correct); if(isCorrect) quizScore++; const feedbackDiv = document.getElementById('quiz-feedback'); feedbackDiv.innerHTML = `<div class="quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? '✓ Correct!' : '✗ Incorrect. Correct: ' + quiz[currentQuizIndex].options[quiz[currentQuizIndex].correct]}</div>`; setTimeout(()=>{ currentQuizIndex++; selectedAnswerIndex=null; if(currentQuizIndex < quiz.length) renderQuiz(); else { const finalScore = Math.round((quizScore/quiz.length)*100); saveQuizResult(`${currentSubject} - ${currentLesson} (${currentForm.name})`, finalScore); document.getElementById('quiz-container').innerHTML = `<div class="quiz-container"><h3>🎉 Quiz Complete!</h3><div style="font-size:2rem;">${finalScore}%</div><p>${quizScore}/${quiz.length} correct.</p><button class="quiz-btn" onclick="showLessonView()">Back to Lesson</button></div>`; } }, 1200); }
+        
+        // Render Teachers List with Contact Options
+        function renderTeachersList() {
+            const container = document.getElementById('teachers-list');
+            if (!container) return;
+            let html = '';
+            for (const [subject, teacher] of Object.entries(teachersContact)) {
+                html += `
+                    <div class="teacher-card">
+                        <div class="teacher-info">
+                            <div class="teacher-avatar">${teacher.avatar}</div>
+                            <div class="teacher-details">
+                                <h4>${teacher.name}</h4>
+                                <p>${subject} Teacher • ${currentForm ? `Available for ${currentForm.name}` : 'All Forms'}</p>
+                            </div>
+                        </div>
+                        <div class="contact-buttons">
+                            <button class="whatsapp" onclick="contactTeacherWhatsApp('${subject}')">📱 WhatsApp</button>
+                            <button class="email" onclick="contactTeacherEmail('${subject}')">✉️ Email</button>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function contactTeacherWhatsApp(subject) {
+            const teacher = teachersContact[subject];
+            const message = `Hello ${teacher.name}, I am a student using The Bright Sight. I need help with ${subject}. Could you assist me please?`;
+            const url = `https://wa.me/${teacher.whatsapp.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+            showToast(`Opening WhatsApp to contact ${teacher.name}`);
+        }
+
+        function contactTeacherEmail(subject) {
+            const teacher = teachersContact[subject];
+            const subjectLine = `Help with ${subject} - The Bright Sight Student`;
+            const body = `Dear ${teacher.name},\n\nI am learning ${subject} on The Bright Sight app and I have some questions. Could you please help me?\n\nThank you!`;
+            window.location.href = `mailto:${teacher.email}?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(body)}`;
+            showToast(`Opening email to ${teacher.name}`);
+        }
+
+        function sendGeneralQuestion() {
+            const question = document.getElementById('studentQuestion')?.value.trim();
+            if (!question) { alert('Please write your question first.'); return; }
+            const allTeachers = Object.values(teachersContact);
+            if (allTeachers.length === 0) return;
+            const firstTeacher = allTeachers[0];
+            const message = `📚 *Student Question from The Bright Sight* 📚\n\nQuestion: ${question}\n\nPlease reply to help this student shine brighter!`;
+            const url = `https://wa.me/${firstTeacher.whatsapp.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+            showToast('Question prepared for WhatsApp. You can send to any teacher!');
+            document.getElementById('studentQuestion').value = '';
+        }
+
+        function shareApp() {
+            if (navigator.share) navigator.share({ title: 'The Bright Sight', text: 'Offline learning for Cameroon!', url: window.location.href });
+            else alert('Tap browser menu → Share → WhatsApp or Bluetooth');
+        }
+
+        function showToast(msg) {
+            let toast = document.createElement('div'); toast.className = 'toast-msg'; toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        // Tab Navigation
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.content-pane').forEach(pane => pane.classList.remove('active'));
+                document.getElementById(`${tabId}-pane`).classList.add('active');
+                if (tabId === 'progress') updateProgressDisplay();
+                if (tabId === 'teachers') { renderTeachersList(); }
+            });
+        });
+
+        renderGrades();
+        updateProgressDisplay();
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(e => console.log('SW error:', e));
+    </script>
+</body>
+</html>
